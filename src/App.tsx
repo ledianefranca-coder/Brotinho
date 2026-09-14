@@ -279,6 +279,10 @@ export default function App() {
         {activeTab === 'settings' && <SettingsView categories={categories} onSaveCategories={updateCategories} allExpenses={expenses} allIncomes={incomes} debts={debts} goals={goals} fixedTemplates={fixedTemplates} onRestoreAllData={handleRestoreAllData} />}
       </main>
 
+      <footer className="lg:pl-64 px-4 pb-24 lg:pb-6 text-center text-xs text-slate-500">
+        Desenvolvido por <span className="font-semibold text-emerald-700">Lediane França</span>
+      </footer>
+
       <PayBillModal bill={payingBill} onClose={() => { setIsPayModalOpen(false); setPayingBill(null); }} onConfirm={(billId, paidDate, amount) => handleConfirmPayment(billId, paidDate, amount)} />
       <TransactionModal isOpen={isTransactionModalOpen} initialType={transactionModalDefaultType} currentYearMonth={currentYearMonth} categories={categories} editingExpense={editingExpense} editingIncome={editingIncome} onClose={() => { setIsTransactionModalOpen(false); setEditingExpense(null); setEditingIncome(null); }} onSaveExpense={handleSaveExpense} onSaveIncome={handleSaveIncome} />
     </div>
