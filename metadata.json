@@ -1,0 +1,6 @@
+{
+  "name": "Meu Controle Financeiro",
+  "description": "Aplicação moderna e acolhedora de controle financeiro pessoal com gestão de despesas, receitas, contas a pagar e atrasadas, despesas fixas, dívidas, metas, calendário e mascote inteligente.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
