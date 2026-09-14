@@ -17,6 +17,7 @@ import {
   Plus, 
   Menu, 
   X,
+  Bell,
   Sparkles
 } from 'lucide-react';
 import { ActiveTab, MascotStatus } from '../types.ts';
@@ -47,6 +48,8 @@ export function Navigation({
   pendingCount
 }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const notificationCount = overdueCount + pendingCount;
 
   const menuItems = [
     { id: 'dashboard' as ActiveTab, label: 'Dashboard', icon: LayoutDashboard },
@@ -129,8 +132,70 @@ export function Navigation({
             />
           </div>
 
-          {/* Actions: Logout */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Actions: Notifications & Logout */}
+          <div className="relative flex items-center gap-1 sm:gap-2 shrink-0">
+            <button
+              id="btn-notifications"
+              type="button"
+              onClick={() => setNotificationsOpen(!notificationsOpen)}
+              className="relative p-2 text-slate-500 hover:text-emerald-700 rounded-xl hover:bg-emerald-50 transition cursor-pointer"
+              title="Notificações financeiras"
+              aria-label="Abrir notificações"
+              aria-expanded={notificationsOpen}
+            >
+              <Bell className="w-5 h-5" />
+              {notificationCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">
+                  {notificationCount > 99 ? '99+' : notificationCount}
+                </span>
+              )}
+            </button>
+
+            {notificationsOpen && (
+              <div className="absolute right-0 top-12 z-50 w-72 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-xl">
+                <div className="flex items-center justify-between border-b border-stone-100 px-4 py-3">
+                  <div>
+                    <p className="text-sm font-bold text-slate-900">Notificações</p>
+                    <p className="text-[11px] text-slate-500">Resumo financeiro do mês</p>
+                  </div>
+                  <Bell className="w-4 h-4 text-emerald-600" />
+                </div>
+                <div className="p-2">
+                  {overdueCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => { handleTabClick('overdue'); setNotificationsOpen(false); }}
+                      className="w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left hover:bg-rose-50 transition"
+                    >
+                      <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0" />
+                      <span className="text-xs text-slate-700">
+                        <strong className="text-rose-700">{overdueCount}</strong> {overdueCount === 1 ? 'conta atrasada' : 'contas atrasadas'}
+                      </span>
+                    </button>
+                  )}
+                  {pendingCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => { handleTabClick('bills_to_pay'); setNotificationsOpen(false); }}
+                      className="w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left hover:bg-sky-50 transition"
+                    >
+                      <span className="w-2.5 h-2.5 rounded-full bg-sky-500 shrink-0" />
+                      <span className="text-xs text-slate-700">
+                        <strong className="text-sky-700">{pendingCount}</strong> {pendingCount === 1 ? 'conta pendente' : 'contas pendentes'}
+                      </span>
+                    </button>
+                  )}
+                  {notificationCount === 0 && (
+                    <div className="px-3 py-5 text-center">
+                      <CheckCircle2 className="w-7 h-7 mx-auto mb-2 text-emerald-500" />
+                      <p className="text-xs font-semibold text-emerald-800">Tudo em dia por aqui!</p>
+                      <p className="mt-1 text-[11px] text-slate-500">Nenhuma pendência neste mês.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Logout button */}
             <button
               id="btn-logout"
